@@ -9,6 +9,8 @@ black = (0,0,0)
 white = (255,255,255)
 red = (255,0,0)
 
+#the width of the car in pixels
+car_width = 73
 # set the size of the display window
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 # the heading that will be on the top of the display window
@@ -17,43 +19,50 @@ pygame.display.set_caption('A bit racey')
 clock = pygame.time.Clock()
 # loading image in a variable
 carImg = pygame.image.load('img/racecar.png')
-# creating a function to display car on the background
+# creating a function to display car on the background at the position x and y from the origin
 def car(x,y):
     gameDisplay.blit(carImg,(x,y))
 
-# defining the point where we want our car to start
+def game_loop():
+    # defining the point where we want our car to start
 
-x = (display_width * 0.45)
-y = (display_height * 0.8)
-x_change = 0
+    x = (display_width * 0.45)
+    y = (display_height * 0.8)
+    x_change = 0
 
-# by default we'll start the game as not crashed
-crashed = False
-# creating the loop for crashing
-# this is just our event handling loop
-while not crashed:
-    for event in pygame.event.get(): #getting what user does every frame per second
-    # eg clicking mouse or pressing key
-        if event.type == pygame.QUIT:
-            crashed == True
-    # asking if the user has pressed any key
-    if event.type == pygame.KEYDOWN:
-        # if the key pressed is left key
-        if event.key == pygame.K_LEFT:
-            x_change = -5
-        elif event.key == pygame.K_RIGHT:
-            x_change = 5
+    # by default we'll start the game as not crashed
+    gameExit = False
+    # creating the loop for crashing
+    # this is just our event handling loop
+    while not gameExit:
+        for event in pygame.event.get(): #getting what user does every frame per second
+        # eg clicking mouse or pressing key
+            if event.type == pygame.QUIT:
+                gameExit == True
+        # asking if the user has pressed any key
+        if event.type == pygame.KEYDOWN:
+            # if the key pressed is left key
+            if event.key == pygame.K_LEFT:
+                x_change = -5
+            elif event.key == pygame.K_RIGHT:
+                x_change = 5
 
-# when the pressed key is released
-    if event.type == pygame.KEYUP:
-        if event.key == pygame.K_LEFT or pygame.K_RIGHT:
-            x_change=0
-    # changing the value of x as the key is pressed
-    x+= x_change
+    # when the pressed key is released
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT or pygame.K_RIGHT:
+                x_change=0
+        # changing the value of x as the key is pressed
+        x+= x_change
 
-    gameDisplay.fill(white) #this will display whole of the background as white
-    car(x,y) # calling the function to car to display the car by giving them the parameter of x and y, which are the starting point of the car image
-    pygame.display.update()
-    clock.tick(60) #the no here is fps
+        gameDisplay.fill(white) #this will display whole of the background as white
+        car(x,y) # calling the function to car to display the car by giving them the parameter of x and y, which are the starting point of the car image
+
+    #making boundaries to crash when the car hits the boundary
+        if x > display_width - car_width or x < 0:
+            gameExit = True
+
+        pygame.display.update()
+        clock.tick(60) #the no here is fps
+game_loop()
 pygame.quit()
 quit()
