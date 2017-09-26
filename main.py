@@ -25,6 +25,7 @@ def car(x,y):
 
 x = (display_width * 0.45)
 y = (display_height * 0.8)
+x_change = 0
 
 # by default we'll start the game as not crashed
 crashed = False
@@ -35,6 +36,21 @@ while not crashed:
     # eg clicking mouse or pressing key
         if event.type == pygame.QUIT:
             crashed == True
+    # asking if the user has pressed any key
+    if event.type == pygame.KEYDOWN:
+        # if the key pressed is left key
+        if event.key == pygame.K_LEFT:
+            x_change = -5
+        elif event.key == pygame.K_RIGHT:
+            x_change = 5
+
+# when the pressed key is released
+    if event.type == pygame.KEYUP:
+        if event.key == pygame.K_LEFT or pygame.K_RIGHT:
+            x_change=0
+    # changing the value of x as the key is pressed
+    x+= x_change
+
     gameDisplay.fill(white) #this will display whole of the background as white
     car(x,y) # calling the function to car to display the car by giving them the parameter of x and y, which are the starting point of the car image
     pygame.display.update()
