@@ -1,4 +1,5 @@
 import pygame
+import time
 # initiate the pygame module
 pygame.init()
 # making variables for display_width and display_height
@@ -23,6 +24,25 @@ carImg = pygame.image.load('img/racecar.png')
 def car(x,y):
     gameDisplay.blit(carImg,(x,y))
 
+# display message
+def crash():
+    message_display('You Crashed')
+
+ # define function for the font to be displayed when crashed
+def message_display(text):
+    largeText = pygame.font.font('freesansbold.ttf',115)
+    TextSurf, TextRect = text_objects(text, largeText)
+    TextRect.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+    pygame.display.update()
+    time.sleep(2)
+    game_loop()
+
+
+def text_objects(text , font):
+    textSurface = font.render (text, True , black)
+    return textSurface, textSurface.get_rect()
+
 def game_loop():
     # defining the point where we want our car to start
 
@@ -40,12 +60,12 @@ def game_loop():
             if event.type == pygame.QUIT:
                 gameExit == True
         # asking if the user has pressed any key
-        if event.type == pygame.KEYDOWN:
-            # if the key pressed is left key
-            if event.key == pygame.K_LEFT:
-                x_change = -5
-            elif event.key == pygame.K_RIGHT:
-                x_change = 5
+            if event.type == pygame.KEYDOWN:
+                # if the key pressed is left key
+                if event.key == pygame.K_LEFT:
+                    x_change = -5
+                elif event.key == pygame.K_RIGHT:
+                    x_change = 5
 
     # when the pressed key is released
         if event.type == pygame.KEYUP:
