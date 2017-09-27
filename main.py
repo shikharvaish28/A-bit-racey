@@ -30,7 +30,7 @@ def crash():
 
  # define function for the font to be displayed when crashed
 def message_display(text):
-    largeText = pygame.font.font('freesansbold.ttf',115)
+    largeText = pygame.font.Font('freesansbold.ttf',115)
     TextSurf, TextRect = text_objects(text, largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
@@ -64,13 +64,13 @@ def game_loop():
                 # if the key pressed is left key
                 if event.key == pygame.K_LEFT:
                     x_change = -5
-                elif event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT:
                     x_change = 5
 
     # when the pressed key is released
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or pygame.K_RIGHT:
-                x_change=0
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or pygame.K_RIGHT:
+                    x_change=0
         # changing the value of x as the key is pressed
         x+= x_change
 
@@ -79,7 +79,7 @@ def game_loop():
 
     #making boundaries to crash when the car hits the boundary
         if x > display_width - car_width or x < 0:
-            gameExit = True
+            crash()
 
         pygame.display.update()
         clock.tick(60) #the no here is fps
