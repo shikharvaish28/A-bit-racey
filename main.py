@@ -11,6 +11,8 @@ black = (0,0,0)
 white = (255,255,255)
 red = (255,0,0)
 
+block_color = (53 , 115 , 255)
+
 #the width of the car in pixels
 car_width = 73
 # set the size of the display window
@@ -21,6 +23,14 @@ pygame.display.set_caption('A bit racey')
 clock = pygame.time.Clock()
 # loading image in a variable
 carImg = pygame.image.load('img/racecar.png')
+
+
+# adding the scoring system function
+def things_dodged(count):
+    font = pygame.font.SysFont(None , 25)
+    text = font.render("Dodged: "+ str(count) , True , black)
+    gameDisplay.blit(text , (0,0))
+
 
 # defining a function make objects for avoiding things
 def things(thingx , thingy , thingw ,thingh, color):
@@ -61,10 +71,10 @@ def game_loop():
 # defining the location of the objects
     thing_startx = random.randrange(0 , display_width)
     thing_starty = 600
-    thing_speed = 7
+    thing_speed = 4
     thing_width = 100
     thing_height = 100
-
+    Dodged = 0
 
     # by default we'll start the game as not crashed
     gameExit = False
@@ -92,24 +102,27 @@ def game_loop():
 
         gameDisplay.fill(white) #this will display whole of the background as white
         #things(thingx , thingy ,thingw , thingh, color)
-        things(thing_startx , thing_starty , thing_width , thing_height , black)
+        things(thing_startx , thing_starty , thing_width , thing_height , block_color)
 
         thing_starty += thing_speed
 
         car(x,y) # calling the function to car to display the car by giving them the parameter of x and y, which are the starting point of the car image
-
+        things_dodged(Dodged)
     #making boundaries to crash when the car hits the boundary
         if x > display_width - car_width or x < 0:
             crash()
         if thing_starty > display_height:
             thing_starty = 0 - thing_height
             thing_startx = random.randrange( 0 , display_width)
+            Dodged += 1
+            thing_speed += 1
+            thing_width += (Dodged*1.2)
 
         if y < thing_starty+thing_height:
-            print ('y crossover')
+            # print ('y crossover')
 
             if x > thing_startx and x < thing_startx+thing_width or x+car_width > thing_startx and x+car_width < thing_startx+thing_width:
-                print (' x crossover')
+                # print (' x crossover')
                 crash()
 
 
